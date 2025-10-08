@@ -1,0 +1,27 @@
+FROM eclipse-temurin:17-jre-alpine
+
+# Set the working directory
+WORKDIR /deployments
+
+# Environment variables
+ENV LANGUAGE='en_US:en'
+ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+
+# Copy the application jar and dependencies
+COPY target/quarkus-app/lib/ /deployments/lib/
+COPY target/quarkus-app/*.jar /deployments/
+COPY target/quarkus-app/app/ /deployments/app/
+COPY target/quarkus-app/quarkus/ /deployments/quarkus/
+
+# Create a non-root user
+RUN addgroup -S kogito && adduser -S kogito -G kogito \
+	&& chown -R kogito:kogito /deployments
+
+# Switch to non-root user
+USER kogito
+
+# Expose the application port
+EXPOSE 8080
+
+# Set the entrypoint
+ENTRYPOINT [ "java", "-jar", "/deployments/quarkus-run.jar" ]

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.kie</groupId>
+		<artifactId>kie-tools-maven-base</artifactId>
+		<version>10.0.0</version>
+	</parent>
+	<artifactId>kogito-example</artifactId>
+	<name>Example Accelerator Application :: jBPM Compact Architecture</name>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<properties>
+		<compiler-plugin.version>3.10.1</compiler-plugin.version>
+		<maven.compiler.release>17</maven.compiler.release>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+		<quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+		<quarkus.platform.version>3.8.4</quarkus.platform.version>
+		<kogito.bom.version>10.0.0</kogito.bom.version>
+		<jbpm.quarkus.devui.version>10.0.0</jbpm.quarkus.devui.version>
+		<kie.version>10.0.0</kie.version>
+		<version.io.quarkiverse.embedded.postgresql>0.2.2</version.io.quarkiverse.embedded.postgresql>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>${quarkus.platform.group-id}</groupId>
+				<artifactId>${quarkus.platform.artifact-id}</artifactId>
+				<version>${quarkus.platform.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.kie.kogito</groupId>
+				<artifactId>kogito-bom</artifactId>
+				<version>${kogito.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.kie.kogito</groupId>
+				<artifactId>kogito-quarkus-bom</artifactId>
+				<version>10.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.kie.kogito</groupId>
+				<artifactId>kogito-dependencies-bom</artifactId>
+				<version>10.0.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- Core dependencies -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-arc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-resteasy</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-resteasy-jackson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-smallrye-openapi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-smallrye-graphql</artifactId>
+		</dependency>
+
+		<!-- Kogito and jBPM dependencies -->
+
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-with-drools-quarkus</artifactId>
+		</dependency>
+
+		<!-- Decisions with Events -->
+		<!-- <dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-addons-quarkus-events-decisions</artifactId>
+			<version>${kie.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+		</dependency> -->
+
+
+		<!-- Security -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-oidc</artifactId>
+		</dependency>
+
+		<!-- OpenShift -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-openshift</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-container-image-openshift</artifactId>
+		</dependency>
+		<!-- Runtimes -->
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-quarkus-decisions</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-quarkus-rules</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.kie.kogito</groupId>
+			<artifactId>kogito-drools</artifactId>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-junit5</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkiverse.embedded.postgresql</groupId>
+			<artifactId>quarkus-embedded-postgresql</artifactId>
+			<version>${version.io.quarkiverse.embedded.postgresql}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.kie.kogito</groupId>
+			<artifactId>kogito-scenario-simulation</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>${quarkus.platform.group-id}</groupId>
+				<artifactId>quarkus-maven-plugin</artifactId>
+				<version>${quarkus.platform.version}</version>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build</goal>
+							<goal>generate-code</goal>
+							<goal>generate-code-tests</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${compiler-plugin.version}</version>
+				<configuration>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>openshift</id>
+			<properties>
+				<quarkus.kubernetes-client.trust-certs>true</quarkus.kubernetes-client.trust-certs>
+				<quarkus.openshift.expose>true</quarkus.openshift.expose>
+				<quarkus.openshift.deployment-kind>Deployment</quarkus.openshift.deployment-kind>
+				<quarkus.container-image.group>${project.groupId}</quarkus.container-image.group>
+				<quarkus.container-image.registry>image-registry.openshift-image-registry.svc:5000</quarkus.container-image.registry>
+			</properties>
+		</profile>
+	</profiles>
+</project>
